@@ -1,0 +1,11 @@
+# Vscode
+.vscode/
+
+# Python
+__pycache__/
+.venv/
+*.py[cod]
+
+# Project
+data/
+model/
