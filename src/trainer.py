@@ -2,13 +2,12 @@ from pathlib import Path
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
-from model import GnuBGModel, WildBGModel
+from model import ModelDataset, Model
+from model.gnubg import GnuBGModel
+from model.wildbg import WildBGModel
+from model.onnx import ONNXModel
 
-def save_model(model: nn.Module, path: str) -> None:
-    dummy_input = torch.randn(1, model.input_size, requires_grad=True)
-    torch.onnx.export(model, dummy_input, path)
-
-def train(model: nn.Module, trainloader: DataLoader, epochs: int) -> nn.Module:
+def train(model: Model, trainloader: DataLoader, epochs: int) -> Model:
     # Define loss function, L1Loss and MSELoss are good choices
     criterion = nn.MSELoss()
 
@@ -37,15 +36,15 @@ def train(model: nn.Module, trainloader: DataLoader, epochs: int) -> nn.Module:
     
     return model
 
-def main(model: nn.Module, data_path: str, model_path: str):
-    traindata = model.dataset(data_path).to(device)
+def main(model: Model, data_path: str, model_path: str):
+    traindata = ModelDataset(model, data_path).to(device)
     trainloader = DataLoader(traindata, batch_size=64, shuffle=True)
 
     try:
         model = train(model, trainloader, 20)
     finally:
         print('Finished Training')
-        save_model(model, model_path)
+        model.save_onnx(model_path)
 
 if __name__ == "__main__":
     if torch.cuda.is_available():
