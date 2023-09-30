@@ -1,4 +1,6 @@
-# Trainer
+# Staffa Trainer
+
+Training for [staffa](https://github.com/bungogood/staffa) a backgammon engine
 
 ## References
 
