@@ -18,10 +18,10 @@ class Model(nn.Module, ABC):
         torch.onnx.export(self, dummy_input, path)
 
 class ModelDataset(Dataset):
-    def __init__(self, model: Model, csv_files: list | str):
+    def __init__(self, model: Model, csv_files: list | str, sep: str = ","):
         if isinstance(csv_files, str):
             csv_files = [csv_files]
-        data = pd.concat([pd.read_csv(f) for f in csv_files ], ignore_index=True)
+        data = pd.concat([pd.read_csv(f, sep=sep) for f in csv_files ], ignore_index=True)
         input_size = model.input_size()
         output_size = model.output_size()
         if data.shape[1] != input_size + output_size:

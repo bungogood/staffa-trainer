@@ -1,7 +1,7 @@
 from pathlib import Path
 import torch
 from torch import nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 from model import ModelDataset, Model
 from model.gnubg import GnuBGModel
 from model.wildbg import WildBGModel
@@ -36,8 +36,7 @@ def train(model: Model, trainloader: DataLoader, epochs: int) -> Model:
     
     return model
 
-def main(model: Model, data_path: str, model_path: str):
-    traindata = ModelDataset(model, data_path).to(device)
+def main(model: Model, traindata: Dataset, model_path: str):
     trainloader = DataLoader(traindata, batch_size=64, shuffle=True)
 
     try:
@@ -54,7 +53,9 @@ if __name__ == "__main__":
     else:
         device = "cpu"
     device = torch.device(device)
+    csv_file = "data/rollouts-07.csv"
     print(f"Using {device} device")
     Path("../model").mkdir(exist_ok=True)
     model = WildBGModel().to(device)
-    main(model, "data/rollouts.csv", "model/staffa.onnx")
+    traindata = ModelDataset(model, csv_file, sep=";").to(device)
+    main(model, traindata, "model/staffa.onnx")
