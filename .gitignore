@@ -7,5 +7,5 @@ __pycache__/
 *.py[cod]
 
 # Project
-data/
-model/
+/data/
+/model/
