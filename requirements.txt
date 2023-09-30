@@ -14,11 +14,16 @@ onnx==1.14.1
 onnx2torch==1.5.11
 onnxruntime==1.16.0
 packaging==23.1
+pandas==2.1.1
 Pillow==10.0.1
 protobuf==4.24.3
+python-dateutil==2.8.2
+pytz==2023.3.post1
 requests==2.31.0
+six==1.16.0
 sympy==1.12
 torch==2.0.1
 torchvision==0.15.2
 typing_extensions==4.8.0
+tzdata==2023.3
 urllib3==2.0.5
